@@ -2,10 +2,10 @@
 #include <Wire.h>
 #include "RTClib.h"
 RTC_DS1307 rtc;
-#define Fan 3
-#define Light 4
-#define TV 5
-#define AC 6
+#define m1 3
+#define m2 4
+#define m3 5
+#define m4 6
 int temp=0,i=0;
 int led=13;
 String fback;
@@ -14,14 +14,14 @@ void setup()
 {
   Serial.begin(9600);
   pinMode(led, OUTPUT);
-   pinMode(Fan, OUTPUT);
-    pinMode(Light, OUTPUT);
-     pinMode(TV, OUTPUT);
-     pinMode(AC, OUTPUT);
-     digitalWrite(Fan,HIGH);
-  digitalWrite(Light,HIGH);
-  digitalWrite(TV,HIGH);
-  digitalWrite(AC,HIGH);
+   pinMode(m1, OUTPUT);
+    pinMode(m2, OUTPUT);
+     pinMode(m3, OUTPUT);
+     pinMode(m4, OUTPUT);
+     digitalWrite(m1,HIGH);
+  digitalWrite(m2,HIGH);
+  digitalWrite(m3,HIGH);
+  digitalWrite(m4,HIGH);
       
     rtc.adjust(DateTime(F(__DATE__), F(__TIME__)));
   Serial.println("AT+CNMI=2,2,0,0,0");
@@ -42,19 +42,19 @@ void loop()
   }
    DateTime now = rtc.now();
    if((now.hour()==20)&&(now.minute()==42)&&(now.second()==20)){
-    digitalWrite(Light, HIGH);
-      digitalWrite(Fan, HIGH);
-      digitalWrite(TV, HIGH);
-      digitalWrite(AC, HIGH);
+    digitalWrite(m2, HIGH);
+      digitalWrite(m1, HIGH);
+      digitalWrite(m3, HIGH);
+      digitalWrite(m4, HIGH);
     fback="Rtc turned on";
   SendMessage();
   delay(200);
   }
   else if((now.hour()==20)&&(now.minute()==43)&&(now.second()==20)){
-    digitalWrite(Light, LOW);
-      digitalWrite(Fan, LOW);
-      digitalWrite(TV, LOW);
-         digitalWrite(AC, LOW);
+    digitalWrite(m2, LOW);
+      digitalWrite(m1, LOW);
+      digitalWrite(m3, LOW);
+         digitalWrite(m4, LOW);
    fback="rtc turned off";
   SendMessage();
   delay(200);
@@ -98,75 +98,74 @@ void SendMessage()
 void check()
 {
   
-   if(!(strncmp(str,"tv off",6)))
+   if(!(strncmp(str,"m3 off",6)))
     {
-      digitalWrite(TV, HIGH);
-      fback="tv is turned off";
+      digitalWrite(m3, HIGH);
+      fback="m3 is turned off";
       SendMessage();
       delay(200);
     }  
    
-   else if(!(strncmp(str,"tv on",5)))
+   else if(!(strncmp(str,"m3 on",5)))
     {
-      digitalWrite(TV, LOW);
-     fback="tv is turned on";
+      digitalWrite(m3, LOW);
+     fback="m3 is turned on";
       SendMessage();
       delay(200);
     }
-  else if(!(strncmp(str,"ac off",6)))
+  else if(!(strncmp(str,"m4 off",6)))
     {
-      digitalWrite(AC, HIGH);
-      fback="ac is turned off";
+      digitalWrite(m4, HIGH);
+      fback="m4 is turned off";
       SendMessage();
       delay(200);
     }  
    
-   else if(!(strncmp(str,"ac on",5)))
+   else if(!(strncmp(str,"m4 on",5)))
     {
-      digitalWrite(AC, LOW);
-     fback="ac is turned on";
+      digitalWrite(m4, LOW);
+     fback="m4 is turned on";
       SendMessage();
       delay(200);
     }
-  
-    else if(!(strncmp(str,"fan off",7)))
+    else if(!(strncmp(str,"m1 off",6)))
     {
-      digitalWrite(Fan, HIGH);
-     fback="fan is turned off";
-      SendMessage();
-      delay(200);
-    }
- 
-    else if(!(strncmp(str,"fan on",6)))
-    {
-      digitalWrite(Fan, LOW);
-      fback="fan is turned on";
+      digitalWrite(m1, HIGH);
+     fback="m1 is turned off";
       SendMessage();
       delay(200);
     }
  
-    else if(!(strncmp(str,"light off",9)))
+    else if(!(strncmp(str,"m1 on",5)))
     {
-      digitalWrite(Light, HIGH);
-      fback="light is turned off";
+      digitalWrite(m1, LOW);
+      fback="m1 is turned on";
       SendMessage();
       delay(200);
     }
  
-    else if(!(strncmp(str,"light on",8)))
+    else if(!(strncmp(str,"m2 off",6)))
     {
-      digitalWrite(Light, LOW);
-     fback="light is turned on";
+      digitalWrite(m2, HIGH);
+      fback="m2 is turned off";
+      SendMessage();
+      delay(200);
+    }
+ 
+    else if(!(strncmp(str,"m2 on",5)))
+    {
+      digitalWrite(m2, LOW);
+     fback="m2 is turned on";
       SendMessage();
       delay(200);
     } 
     
     else if(!(strncmp(str,"all off",7)))
     {
-      digitalWrite(Light, HIGH);
-      digitalWrite(Fan, HIGH);
-      digitalWrite(TV, HIGH);
-      digitalWrite(AC, HIGH);
+      digitalWrite(m2, HIGH);
+      digitalWrite(m1, HIGH);
+      digitalWrite(m3, HIGH);
+      digitalWrite(m4, HIGH);
      fback="all switches off";
       SendMessage();
       delay(200);
@@ -174,10 +173,10 @@ void check()
  
     else if(!(strncmp(str,"all on",6)))
     {
-      digitalWrite(Light, LOW);
-      digitalWrite(Fan, LOW);
-      digitalWrite(TV, LOW);
-         digitalWrite(AC, LOW);
+      digitalWrite(m2, LOW);
+      digitalWrite(m1, LOW);
+      digitalWrite(m3, LOW);
+         digitalWrite(m4, LOW);
     fback="all switches on";
       SendMessage();
       delay(200);
